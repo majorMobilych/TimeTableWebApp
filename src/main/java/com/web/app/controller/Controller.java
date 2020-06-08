@@ -31,11 +31,12 @@ public class Controller {
         return new ModelAndView("logInSignUp");
     }
 
+    @SneakyThrows
     @RequestMapping(value = "/logIn", method = RequestMethod.POST)
     @ResponseBody
     public UserDTO logIn(@RequestBody UserDTO userDTO) {
         System.out.println(userDTO.toString());
-        //userRepository.getUser(userDTO.getLogin(), userDTO.getPassword());
+        userRepository.getUser(userDTO.getLogin(), userDTO.getPassword());
         return userDTO;
     }
 

@@ -41,11 +41,11 @@ public class UserRepositoryImpl implements UserRepository {
         UsersEntity selectUser = (UsersEntity) isUserPresent.uniqueResult();
         currentSession.close();
         if (selectUser == null) {
-            throw new NotExistingUserException();
+            throw new NotExistingUserException("Not existing user");
         } else {
             if (!password.equals(selectUser.getPassword())) {
                 log.info("PASSWORD IS INCORRECT");
-                throw new IncorrectPasswordException();
+                throw new IncorrectPasswordException("Incorrect user password");
             } else {
                 log.info("LOG IN SUCCESS");
                 return selectUser;
