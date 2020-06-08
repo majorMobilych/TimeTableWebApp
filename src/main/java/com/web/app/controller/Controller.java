@@ -1,5 +1,6 @@
 package com.web.app.controller;
 
+import com.web.app.hibernate.entity.UsersEntity;
 import com.web.app.model.UserDTO;
 import com.web.app.repository.UserRepository;
 import com.web.app.service.UserService;
@@ -31,16 +32,14 @@ public class Controller {
         return new ModelAndView("logInSignUp");
     }
 
-    @SneakyThrows
     @RequestMapping(value = "/logIn", method = RequestMethod.POST)
     @ResponseBody
     public UserDTO logIn(@RequestBody UserDTO userDTO) {
         System.out.println(userDTO.toString());
-        userRepository.getUser(userDTO.getLogin(), userDTO.getPassword());
+        UsersEntity usersEntity = userRepository.checkUser(userDTO.getLogin(), userDTO.getPassword());
         return userDTO;
     }
 
-    @SneakyThrows
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public ResponseEntity signUp(@RequestBody UserDTO userDTO) {
         String userpassword = userService.sendPassword(userDTO.getLogin());
