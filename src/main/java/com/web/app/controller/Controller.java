@@ -31,7 +31,6 @@ public class Controller {
         return new ModelAndView("logInSignUp");
     }
 
-    @SneakyThrows
     @RequestMapping(value = "/logIn", method = RequestMethod.POST)
     @ResponseBody
     public UserDTO logIn(@RequestBody UserDTO userDTO) {
