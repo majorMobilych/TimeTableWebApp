@@ -4,7 +4,6 @@ import com.web.app.exceptions.IncorrectPasswordException;
 import com.web.app.exceptions.NotExistingUserException;
 import com.web.app.hibernate.entity.UsersEntity;
 import com.web.app.model.UserDTO;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,23 +24,26 @@ public class UserRepositoryImpl implements UserRepository {
     public void saveUser(UserDTO userDTO) {
         Session currentSession = localSessionFactoryBean.openSession();
         Transaction transaction = currentSession.beginTransaction();
-        currentSession.save(new UsersEntity(userDTO.getUserEmail(), userDTO.getUserName(),
-                userDTO.getUserPassword()));
+        UsersEntity usersEntity = new UsersEntity(userDTO.getLogin(), userDTO.getName(), userDTO.getPassword());
+        System.out.println("usersEntity = " + usersEntity);
+        System.out.println("userDTO = " + userDTO);
+        currentSession.save(new UsersEntity(userDTO.getLogin(), userDTO.getName(),
+                userDTO.getPassword()));
         transaction.commit();
         currentSession.close();
     }
 
-    @SneakyThrows
     @Override
-    public UsersEntity getUser(String userEmail, String userPassword) {
+    public UsersEntity getUser(String login, String password) throws NotExistingUserException, IncorrectPasswordException {
         Session currentSession = localSessionFactoryBean.openSession();
-        Query isUserPresent = currentSession.createQuery("FROM UsersEntity WHERE useremail = :userEmail");
-        isUserPresent.setParameter("userEmail", userEmail);
+        Query isUserPresent = currentSession.createQuery("FROM UsersEntity WHERE login = :login");
+        isUserPresent.setParameter("login", login);
         UsersEntity selectUser = (UsersEntity) isUserPresent.uniqueResult();
+        currentSession.close();
         if (selectUser == null) {
             throw new NotExistingUserException();
         } else {
-            if (!userPassword.equals(selectUser.getUserpassword())) {
+            if (!password.equals(selectUser.getPassword())) {
                 log.info("PASSWORD IS INCORRECT");
                 throw new IncorrectPasswordException();
             } else {

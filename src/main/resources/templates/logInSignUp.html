@@ -138,8 +138,6 @@
             background: rgb(105, 105, 105);
             /* цвет надписи на кнопке  */
             color: #fff;
-            /* надписи на кнопках - заглавными буквами */
-            text-transform: uppercase;
 
             /* шрифт надписи на кнопке */
             /* TODO: ЕСЛИ ИЗМЕНЯТЬ(добавлять совйство) ШРИФТ НАДПИСИ НА КНОПКИ, ВСЕ
@@ -256,16 +254,16 @@
 <script>
     $(document).ready(function () {
         $("#LogIn").click(function () {
-            var userEmail = $("#userEmailLogIn").val();
-            var userPassword = $("#userPasswordLogIn").val();
+            var login = $("#userEmailLogIn").val();
+            var password = $("#userPasswordLogIn").val();
             $.post({
                 url: '/logIn',
                 contentType: "application/json; charset=UTF-8",
                 mimeType: "text/html; charset=UTF-8",
                 scriptCharset: "utf-8",
                 data: JSON.stringify({
-                    "userEmail": userEmail,
-                    "userPassword": userPassword
+                    "login": login,
+                    "password": password
                 }),
                 success: function (res) {
                     console.log("success");
@@ -279,16 +277,16 @@
         });
 
         $("#SignUp").click(function () {
-            var userName = $("#userNameSignUp").val();
-            var userEmail = $("#userEmailSignUp").val();
+            var name = $("#userNameSignUp").val();
+            var login = $("#userEmailSignUp").val();
             $.post({
                 url: '/signUp',
                 contentType: "application/json; charset=UTF-8",
                 mimeType: "text/html; charset=UTF-8",
                 scriptCharset: "utf-8",
                 data: JSON.stringify({
-                    "userName": userName,
-                    "userEmail": userEmail
+                    "name": name,
+                    "login": login
                 }),
                 success: function () {
                     console.log("success");

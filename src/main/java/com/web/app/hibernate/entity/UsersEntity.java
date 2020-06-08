@@ -1,15 +1,13 @@
 package com.web.app.hibernate.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Data
 @Table(name = "users", schema = "public", catalog = "postgres")
 public class UsersEntity {

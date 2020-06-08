@@ -1,7 +1,5 @@
 package com.web.app.controller;
 
-import com.web.app.exceptions.IncorrectPasswordException;
-import com.web.app.exceptions.NotExistingUserException;
 import com.web.app.model.UserDTO;
 import com.web.app.repository.UserRepository;
 import com.web.app.service.UserService;
@@ -37,20 +35,20 @@ public class Controller {
     @ResponseBody
     public UserDTO logIn(@RequestBody UserDTO userDTO) {
         System.out.println(userDTO.toString());
-        userRepository.getUser(userDTO.getUserEmail(), userDTO.getUserPassword());
+        //userRepository.getUser(userDTO.getLogin(), userDTO.getPassword());
         return userDTO;
     }
 
     @SneakyThrows
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public ResponseEntity signUp(@RequestBody UserDTO userDTO) {
-        String userpassword = userService.sendPassword(userDTO.getUserEmail());
-        userDTO.setUserPassword(userpassword);
+        String userpassword = userService.sendPassword(userDTO.getLogin());
+        userDTO.setPassword(userpassword);
         userRepository.saveUser(userDTO);
         log.debug("USER SUCCESSFULLY SAVED TO DATABASE");
         return new ResponseEntity(HttpStatus.OK);
     }
-
+/*
     //TODO: КАК УМНЕЕ ОБРАБОТАТЬ ВСЕ ЭКСЕПШЕНЫ? А-ЛЯ БУДЕТ ЕНАМ(\АРЕЙЛИСТ) С ЛОГАМИ, ОТКУДА ОНИ БУДУТ БРАТЬСЯ И
     // ВСТАВЛЯТЬСЯ В ЛОГ
     @ExceptionHandler(NotExistingUserException.class)
@@ -58,12 +56,12 @@ public class Controller {
     public void handleNotExistingUserException() {
         //TODO: ЭТО НОРМАЛЬНЫЙ УРОВЕНЬ ЛОГГИРОВАНИЯ ДЛЯ ЭКСЕПШЕНА?
         log.error("NO SUCH USER WAS FOUND");
-    }
+    }*/
 
-    //TODO: ТЕ ЖЕ ВОПРОСЫ
+/*    //TODO: ТЕ ЖЕ ВОПРОСЫ
     @ExceptionHandler(IncorrectPasswordException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "INCORRECT PASSWORD")
     public void handleIncorrectPasswordException() {
         log.error("INCORRECT PASSWORD");
-    }
+    }*/
 }

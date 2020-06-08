@@ -1,4 +1,4 @@
 package com.web.app.exceptions;
 
-public class IncorrectPasswordException extends NotExistingUserException {
+public class IncorrectPasswordException extends Exception {
 }

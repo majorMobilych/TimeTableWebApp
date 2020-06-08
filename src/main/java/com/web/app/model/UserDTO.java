@@ -1,7 +1,8 @@
 package com.web.app.model;
 
-import lombok.*;
-import org.springframework.lang.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 /**
@@ -12,12 +13,9 @@ import org.springframework.lang.Nullable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    /* TODO: как насчиет написать тредсейф синглион, переходящий от юзерСервис к юзерЭнтити
-     */
-    @NonNull
-    private String userEmail;
+    private String login;
     @Nullable
-    private String userName;
+    private String name;
     @Nullable
-    private String userPassword;
+    private String password;
 }
