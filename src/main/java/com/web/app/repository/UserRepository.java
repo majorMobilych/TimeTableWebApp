@@ -7,5 +7,5 @@ import com.web.app.model.UserDTO;
 
 public interface UserRepository {
     void saveUser(UserDTO userDTO);
-    UsersEntity getUser(String userLogin, String userPassword) throws NotExistingUserException, IncorrectPasswordException;
+    UsersEntity checkUser(String userLogin, String userPassword) throws NotExistingUserException, IncorrectPasswordException;
 }

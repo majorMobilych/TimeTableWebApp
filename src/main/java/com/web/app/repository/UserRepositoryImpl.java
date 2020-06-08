@@ -34,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UsersEntity getUser(String login, String password) throws NotExistingUserException, IncorrectPasswordException {
+    public UsersEntity checkUser(String login, String password) throws NotExistingUserException, IncorrectPasswordException {
         Session currentSession = localSessionFactoryBean.openSession();
         Query isUserPresent = currentSession.createQuery("FROM UsersEntity WHERE login = :login");
         isUserPresent.setParameter("login", login);
