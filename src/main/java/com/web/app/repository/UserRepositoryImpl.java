@@ -3,6 +3,7 @@ package com.web.app.repository;
 import com.web.app.exceptions.IncorrectPasswordException;
 import com.web.app.exceptions.NotExistingUserException;
 import com.web.app.hibernate.entity.UsersEntity;
+import com.web.app.model.CheckUserStatus;
 import com.web.app.model.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -34,21 +35,23 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UsersEntity checkUser(String login, String password) throws NotExistingUserException, IncorrectPasswordException {
+    public UserDTO checkUser(String login, String password) {
         Session currentSession = localSessionFactoryBean.openSession();
         Query isUserPresent = currentSession.createQuery("FROM UsersEntity WHERE login = :login");
         isUserPresent.setParameter("login", login);
         UsersEntity selectUser = (UsersEntity) isUserPresent.uniqueResult();
         currentSession.close();
         if (selectUser == null) {
-            throw new NotExistingUserException("Not existing user");
+            return new UserDTO(CheckUserStatus.USER_NOT_FOUND);
+            // throw new NotExistingUserException("Not existing user");
         } else {
             if (!password.equals(selectUser.getPassword())) {
                 log.info("PASSWORD IS INCORRECT");
-                throw new IncorrectPasswordException("Incorrect user password");
+                return new UserDTO(CheckUserStatus.INCORRECT_PASSWORD);
+                // throw new IncorrectPasswordException("Incorrect user password");
             } else {
                 log.info("LOG IN SUCCESS");
-                return selectUser;
+                return new UserDTO(selectUser.getLogin(), selectUser.getName(), selectUser.getPassword(), CheckUserStatus.SUCCESS);
             }
         }
     }

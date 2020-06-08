@@ -36,8 +36,7 @@ public class Controller {
     @ResponseBody
     public UserDTO logIn(@RequestBody UserDTO userDTO) {
         System.out.println(userDTO.toString());
-        UsersEntity usersEntity = userRepository.checkUser(userDTO.getLogin(), userDTO.getPassword());
-        return userDTO;
+        return userRepository.checkUser(userDTO.getLogin(), userDTO.getPassword());
     }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
