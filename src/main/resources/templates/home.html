@@ -100,12 +100,7 @@
             background-color: rgba(255, 255, 255, .2);
         }
     </style>
-    <script>
-        $("#editAgenda").click(function() {
-            console.log('QWE');
-            $("#editAgenda").closest('tr').find("td").attr('contenteditable','true');
-        });
-    </script>
+
 </head>
 <body>
 <div class="upper-div">
@@ -134,4 +129,13 @@
     </table>
 </div>
 </body>
+
+<script>
+    $("#editAgenda").click(function(e) {
+        alert('asd');
+        console.log('QWE');
+        $("#editAgenda").closest('tr').find("td").attr('contenteditable','true');
+    });
+</script>
+
 </html>
