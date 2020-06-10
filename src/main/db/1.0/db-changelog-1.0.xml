@@ -10,7 +10,14 @@
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-
+        />
+    </changeSet>
+    <changeSet id="liquibase-docs" author="agenda">
+        <sqlFile endDelimiter="\nGO"
+                 path="agenda.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
         />
     </changeSet>
 </databaseChangeLog>

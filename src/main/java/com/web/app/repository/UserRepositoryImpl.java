@@ -1,7 +1,5 @@
 package com.web.app.repository;
 
-import com.web.app.exceptions.IncorrectPasswordException;
-import com.web.app.exceptions.NotExistingUserException;
 import com.web.app.hibernate.entity.UsersEntity;
 import com.web.app.model.CheckUserStatus;
 import com.web.app.model.UserDTO;
@@ -42,16 +40,17 @@ public class UserRepositoryImpl implements UserRepository {
         UsersEntity selectUser = (UsersEntity) isUserPresent.uniqueResult();
         currentSession.close();
         if (selectUser == null) {
-            return new UserDTO(CheckUserStatus.USER_NOT_FOUND);
+            return new UserDTO(CheckUserStatus.USER_NOT_FOUND.name());
             // throw new NotExistingUserException("Not existing user");
         } else {
             if (!password.equals(selectUser.getPassword())) {
                 log.info("PASSWORD IS INCORRECT");
-                return new UserDTO(CheckUserStatus.INCORRECT_PASSWORD);
+                return new UserDTO(CheckUserStatus.INCORRECT_PASSWORD.name());
                 // throw new IncorrectPasswordException("Incorrect user password");
             } else {
                 log.info("LOG IN SUCCESS");
-                return new UserDTO(selectUser.getLogin(), selectUser.getName(), selectUser.getPassword(), CheckUserStatus.SUCCESS);
+                return new UserDTO(selectUser.getLogin(), selectUser.getName(), selectUser.getPassword(),
+                        CheckUserStatus.SUCCESS.name());
             }
         }
     }

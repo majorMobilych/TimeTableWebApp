@@ -18,9 +18,9 @@ public class UserDTO {
     private String name;
     @Nullable
     private String password;
-    private CheckUserStatus checkUserStatus;
+    private String checkUserStatus;
 
-    public UserDTO(CheckUserStatus checkUserStatus) {
+    public UserDTO(String checkUserStatus) {
         this.checkUserStatus = checkUserStatus;
     }
 }

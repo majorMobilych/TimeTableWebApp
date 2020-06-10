@@ -1,4 +1,4 @@
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Start Page</title>
@@ -100,21 +100,10 @@
     <input id="search" placeholder="SEARCH"/>
 </div>
 <div class="userLoggedTimeTablesLeft">
-    <label class="labelUserLoggedTimeTablesLeft">MY TIME TABLES</label>
-    <div class="elementTimeTable">
-        <label class="timeTableName">MONDAY</label>
-        <table>
-            <tr>
-                <td>
-                    <button class="buttonElementTimeTableView">VIEW</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button class="buttonElementTimeTableView">EDIT</button>
-                </td>
-            </tr>
-        </table>
+    <label class="labelUserLoggedTimeTablesLeft">Список дел</label>
+    <div th:each="element: ${agenda}" class="elementTimeTable">
+        <label class="timeTableName"  th:text="${element.day}"></label>
+
     </div>
 </div>
 </body>

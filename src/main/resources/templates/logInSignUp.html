@@ -267,6 +267,19 @@
                 }),
                 success: function (res) {
                     console.log("success");
+                    var parsed = JSON.parse(res);
+                    var status = parsed.checkUserStatus;
+                    if (status === 'USER_NOT_FOUND') {
+                        alert('USER NOT FOUND');
+                    }
+                    if (status === 'INCORRECT_PASSWORD') {
+                        alert('INCORRECT PASSWORD');
+                    }
+                    if (status === 'SUCCESS') {
+                        var userName = parsed.name;
+                        alert(userName);
+                        window.location.href = '/homeWithAgenda?userName=' + userName;
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(qXHR);
