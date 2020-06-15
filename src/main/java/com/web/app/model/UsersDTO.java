@@ -12,7 +12,7 @@ import org.springframework.lang.Nullable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UsersDTO {
     private String login;
     @Nullable
     private String name;
@@ -20,7 +20,7 @@ public class UserDTO {
     private String password;
     private String checkUserStatus;
 
-    public UserDTO(String checkUserStatus) {
+    public UsersDTO(String checkUserStatus) {
         this.checkUserStatus = checkUserStatus;
     }
 }

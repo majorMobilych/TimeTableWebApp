@@ -1,8 +1,8 @@
 package com.web.app.repository;
 
-import com.web.app.model.UserDTO;
+import com.web.app.model.UsersDTO;
 
 public interface UserRepository {
-    void saveUser(UserDTO userDTO);
-    UserDTO checkUser(String userLogin, String userPassword);
+    void saveUser(UsersDTO usersDTO);
+    UsersDTO checkUser(String userLogin, String userPassword);
 }

@@ -1,9 +1,11 @@
 package com.web.app.controller;
 
 import com.web.app.hibernate.entity.AgendaEntity;
-import com.web.app.model.UserDTO;
+import com.web.app.model.AgendaDTO;
+import com.web.app.model.UsersDTO;
 import com.web.app.repository.AgendaRepository;
 import com.web.app.repository.UserRepository;
+import com.web.app.service.AgendaService;
 import com.web.app.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.mail.EmailException;
@@ -26,6 +28,9 @@ public class Controller {
     private UserRepository userRepository;
 
     @Autowired
+    private AgendaService agendaService;
+
+    @Autowired
     private AgendaRepository agendaRepository;
 
     @GetMapping("/")
@@ -40,41 +45,38 @@ public class Controller {
 
     @RequestMapping(value = "/logIn", method = RequestMethod.POST)
     @ResponseBody
-    public UserDTO logIn(@RequestBody UserDTO userDTO) {
-        System.out.println(userDTO.toString());
-        return userRepository.checkUser(userDTO.getLogin(), userDTO.getPassword());
+    public UsersDTO logIn(@RequestBody UsersDTO usersDTO) {
+        System.out.println(usersDTO.toString());
+        return userRepository.checkUser(usersDTO.getLogin(), usersDTO.getPassword());
     }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public ResponseEntity signUp(@RequestBody UserDTO userDTO) throws EmailException {
-        String userPassword = userService.sendPassword(userDTO.getLogin());
-        userDTO.setPassword(userPassword);
-        userRepository.saveUser(userDTO);
+    public ResponseEntity signUp(@RequestBody UsersDTO usersDTO) throws EmailException {
+        String userPassword = userService.sendPassword(usersDTO.getLogin());
+        usersDTO.setPassword(userPassword);
+        userRepository.saveUser(usersDTO);
         log.debug("USER SUCCESSFULLY SAVED TO DATABASE");
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
     @GetMapping(value = "/homeWithAgenda")
     public ModelAndView getWeekAgendas(@RequestParam String userName) {
         ModelAndView modelAndView = new ModelAndView("home");
-        List<AgendaEntity> agenda = agendaRepository.getUsersAgenda(userName);
+        List<AgendaEntity> agenda = agendaService.sortedUsersEntity(userName);
         modelAndView.addObject("agenda", agenda);
         return modelAndView;
     }
-/*
-    //TODO: КАК УМНЕЕ ОБРАБОТАТЬ ВСЕ ЭКСЕПШЕНЫ? А-ЛЯ БУДЕТ ЕНАМ(\АРЕЙЛИСТ) С ЛОГАМИ, ОТКУДА ОНИ БУДУТ БРАТЬСЯ И
-    // ВСТАВЛЯТЬСЯ В ЛОГ
-    @ExceptionHandler(NotExistingUserException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "NO SUCH USER FOUND")
-    public void handleNotExistingUserException() {
-        //TODO: ЭТО НОРМАЛЬНЫЙ УРОВЕНЬ ЛОГГИРОВАНИЯ ДЛЯ ЭКСЕПШЕНА?
-        log.error("NO SUCH USER WAS FOUND");
-    }*/
 
-/*    //TODO: ТЕ ЖЕ ВОПРОСЫ
-    @ExceptionHandler(IncorrectPasswordException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "INCORRECT PASSWORD")
-    public void handleIncorrectPasswordException() {
-        log.error("INCORRECT PASSWORD");
-    }*/
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity update(@RequestBody AgendaDTO agendaDTO) {
+        agendaRepository.updateUsersAgenda(agendaDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity add(@RequestBody AgendaDTO agendaDTO) {
+        agendaRepository.saveUsersAgenda(agendaDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

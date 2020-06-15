@@ -1,27 +1,49 @@
 package com.web.app.repository;
 
 import com.web.app.hibernate.entity.AgendaEntity;
-import lombok.RequiredArgsConstructor;
+import com.web.app.model.AgendaDTO;
+import com.web.app.util.DTOEntityConverter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component
-@RequiredArgsConstructor
+@Repository
 public class AgendaRepositoryImpl implements AgendaRepository {
     private final SessionFactory localSessionFactoryBean;
+
+    @Autowired
+    public AgendaRepositoryImpl(SessionFactory localSessionFactoryBean) {
+        this.localSessionFactoryBean = localSessionFactoryBean;
+    }
 
     @Override
     public List<AgendaEntity> getUsersAgenda(String userName) {
         Session currentSession = localSessionFactoryBean.openSession();
-        Query query = currentSession.createQuery("FROM AgendaEntity WHERE username = :username");
-        query.setParameter("username", userName);
-        List<AgendaEntity> list = query.list();
+        List list = currentSession.createQuery("FROM AgendaEntity WHERE username = :username")
+                .setParameter("username", userName).list();
         currentSession.close();
         return list;
     }
 
+    @Override
+    public void updateUsersAgenda(AgendaDTO agendaDTO) {
+        Session session = localSessionFactoryBean.openSession();
+        session.beginTransaction();
+        session.update(DTOEntityConverter.agendaToEntity(agendaDTO));
+        session.getTransaction().commit();
+        session.close();
+    }
+
+
+    @Override
+    public void saveUsersAgenda(AgendaDTO agendaDTO) {
+        Session session = localSessionFactoryBean.openSession();
+        session.beginTransaction();
+        session.save(DTOEntityConverter.agendaToEntity(agendaDTO));
+        session.getTransaction().commit();
+        session.close();
+    }
 }

@@ -118,11 +118,21 @@
         </tr>
 
         <tr th:each="element: ${agenda}">
-            <td th:text="${element.day}"></td>
-            <td th:text="${element.time}"></td>
-            <td th:text="${element.note}"></td>
+            <td th:id="'day' + ${element.id}" th:text="${element.day}"></td>
+            <td th:id="'time' + ${element.id}" th:text="${element.time}"></td>
+            <td th:id="'note' + ${element.id}" th:text="${element.note}"></td>
             <td>
-                <button class="buttonElementTimeTableView" id="editAgenda">EDIT</button>
+                <button th:id="'editAgenda' + ${element.id}" class="buttonElementTimeTableView"
+                        onclick="editOrSaveFunction(this.id)">EDIT
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td id="addDay" contenteditable="true"></td>
+            <td id="addTime" contenteditable="true"></td>
+            <td id="addNote" contenteditable="true"></td>
+            <td>
+                <button id="add">ADD AGENDA</button>
             </td>
         </tr>
         </tbody>
@@ -131,11 +141,80 @@
 </body>
 
 <script>
-    $("#editAgenda").click(function(e) {
-        alert('asd');
-        console.log('QWE');
-        $("#editAgenda").closest('tr').find("td").attr('contenteditable','true');
-    });
+    function editOrSaveFunction(elementId) {
+        if (elementId.includes("editAgenda")) {
+            $("#" + elementId).closest('tr').find("td").attr('contenteditable', 'true');
+            $("#" + elementId).text("save");
+            $("#" + elementId).attr('contenteditable', 'false');
+            $("#" + elementId).attr('id', elementId.replace("editAgenda", "save"));
+        } else {
+            $("#" + elementId).closest('tr').find("td").attr('contenteditable', 'false');
+            $("#" + elementId).attr('onClick', update(elementId));
+            $("#" + elementId).text("edit");
+            $("#" + elementId).attr('id', elementId.replace("save", "editAgenda"));
+        }
+
+        function update(elementId) {
+            var urlParams = new URLSearchParams(window.location.search);
+            var userName = urlParams.get('userName');
+            alert(userName);
+            var day = $("#" + elementId.replace("save", "day")).html();
+            var time = $('#time' + elementId.replace('save', '')).html();
+            var note = $("#note" + elementId.replace("save", "")).html();
+            $.post({
+                url: '/update',
+                contentType: "application/json; charset=UTF-8",
+                mimeType: "text/html; charset=UTF-8",
+                scriptCharset: "utf-8",
+                data: JSON.stringify({
+                    "id": elementId.replace("save", ""),
+                    "username": userName,
+                    "day": day,
+                    "time": time,
+                    "note": note
+                }),
+                success: function () {
+                    alert('success');
+                    console.log("success");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(qXHR);
+                    alert(textStatus);
+                    alert(errorThrown);
+                }
+            });
+            //TODO BUTTON ADD - POST REQUEST
+            //TODO PRETTY VIEW
+        }
+    }
+    $("#add").click(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var userName = urlParams.get('userName');
+        var addDay = $("#addDay").html();
+        var addTime = $("#addTime").html();
+        var addNote = $("#addNote").html();
+        $.post({
+            url: '/add',
+            contentType: "application/json; charset=UTF-8",
+            mimeType: "text/html; charset=UTF-8",
+            scriptCharset: "utf-8",
+            data: JSON.stringify({
+                "username": userName,
+                "day": addDay,
+                "time": addTime,
+                "note": addNote
+            }),
+            success: function () {
+                alert('success');
+                console.log("success");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(qXHR);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    })
 </script>
 
 </html>

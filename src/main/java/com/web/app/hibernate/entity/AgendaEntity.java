@@ -1,8 +1,13 @@
 package com.web.app.hibernate.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "agenda", schema = "public", catalog = "postgres")
 public class AgendaEntity {
     private int id;
@@ -12,6 +17,7 @@ public class AgendaEntity {
     private String note;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

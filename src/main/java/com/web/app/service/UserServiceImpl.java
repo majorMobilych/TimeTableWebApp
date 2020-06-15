@@ -11,10 +11,12 @@ import java.util.UUID;
 @Component
 @Slf4j
 public class UserServiceImpl implements UserService {
+    private final Email email;
 
-    //почему нот реккомендед?
     @Autowired
-    private Email email;
+    public UserServiceImpl(Email email) {
+        this.email = email;
+    }
 
     @Override
     public String sendPassword(String userEmail) throws EmailException {
