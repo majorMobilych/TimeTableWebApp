@@ -1,8 +1,8 @@
 package com.web.app.configuration;
 
-import com.web.app.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +17,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsServiceImpl;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsServiceImpl = userDetailsService;
     }
 
