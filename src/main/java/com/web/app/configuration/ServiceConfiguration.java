@@ -18,7 +18,7 @@ public class ServiceConfiguration {
     @Value("${application.hostname}")
     private String hostName;
 
-    @Value("${application.hostname}")
+    @Value("${application.smtpport}")
     private String SMTPPort;
 
     @Value("${application.email}")
