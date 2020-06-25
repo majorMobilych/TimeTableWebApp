@@ -282,7 +282,7 @@
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(qXHR);
+                    console.log(jqXHR);
                     console.log(textStatus);
                     console.log(errorThrown);
                 }
@@ -305,9 +305,10 @@
                     console.log("success");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert(qXHR);
-                    alert(textStatus);
-                    alert(errorThrown);
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert(jqXHR.responseText);
                 }
             });
         });

@@ -70,7 +70,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--JSTP-->
+        <!--JSP-->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
@@ -122,6 +122,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
+
+
         <!--TODO: dependencies below are optional, may be conflicts-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -130,6 +138,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--OBLIG-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>

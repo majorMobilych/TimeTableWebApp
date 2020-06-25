@@ -1,13 +1,9 @@
 package com.web.app.hibernate.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "agenda", schema = "public", catalog = "postgres")
 public class AgendaEntity {
     private int id;
@@ -15,10 +11,23 @@ public class AgendaEntity {
     private String day;
     private String time;
     private String note;
+    private Boolean privacy;
+
+    public AgendaEntity() {
+    }
+
+    public AgendaEntity(int id, String username, String day, String time, String note, boolean privacy) {
+        this.id = id;
+        this.username = username;
+        this.day = day;
+        this.time = time;
+        this.note = note;
+        this.privacy = privacy;
+    }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -67,6 +76,16 @@ public class AgendaEntity {
         this.note = note;
     }
 
+    @Basic
+    @Column(name = "privacy")
+    public Boolean getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(Boolean privacy) {
+        this.privacy = privacy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,12 +94,11 @@ public class AgendaEntity {
         AgendaEntity that = (AgendaEntity) o;
 
         if (id != that.id) return false;
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
-        if (day != null ? !day.equals(that.day) : that.day != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
-        if (note != null ? !note.equals(that.note) : that.note != null) return false;
-
-        return true;
+        if (!Objects.equals(username, that.username)) return false;
+        if (!Objects.equals(day, that.day)) return false;
+        if (!Objects.equals(time, that.time)) return false;
+        if (!Objects.equals(note, that.note)) return false;
+        return Objects.equals(privacy, that.privacy);
     }
 
     @Override
@@ -90,6 +108,7 @@ public class AgendaEntity {
         result = 31 * result + (day != null ? day.hashCode() : 0);
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (note != null ? note.hashCode() : 0);
+        result = 31 * result + (privacy != null ? privacy.hashCode() : 0);
         return result;
     }
 }

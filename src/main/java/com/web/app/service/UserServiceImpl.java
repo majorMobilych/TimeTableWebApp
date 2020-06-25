@@ -1,37 +1,48 @@
 package com.web.app.service;
 
+import com.web.app.exceptions.UserAlreadyExistsException;
+import com.web.app.model.CheckUserStatus;
+import com.web.app.model.UsersDTO;
+import com.web.app.repository.UserRepository;
+import com.web.app.util.Generators;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final Email email;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(Email email) {
+    public UserServiceImpl(Email email, UserRepository userRepository) {
         this.email = email;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public String sendPassword(String userEmail) throws EmailException {
-        email.setSubject("Authentication to timeTable.project");
-        String password = generatePassword();
-        email.setMsg("Your password: " + password);
-        email.addTo(userEmail);
-        log.debug("PASSWORD WAS SENT");
-        email.send();
-        return password;
+    public void saveUserAndSendPassword(String userEmail, String name) {
+        String password = Generators.generatePassword();
+        try {
+            userRepository.saveUser(new UsersDTO(userEmail, name, password, CheckUserStatus.SUCCESS.name()));
+        } catch (UserAlreadyExistsException e) {
+            e.printStackTrace();
+        }
+        sendPassword(userEmail, password);
     }
 
-    /* Generate random password */
-    private static String generatePassword() {
-        String uuid = UUID.randomUUID().toString();
-        return uuid.replaceAll("-", "").substring(0, 10);
+    private void sendPassword(String userEmail, String password) {
+        email.setSubject("Authentication to timeTable.project");
+        try {
+            email.setMsg("Your password: " + password);
+            email.addTo(userEmail);
+            email.send();
+        } catch (EmailException e) {
+            e.printStackTrace();
+        }
+        log.debug("PASSWORD WAS SENT");
     }
 }

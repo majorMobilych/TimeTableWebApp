@@ -10,23 +10,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-/**
- * Class returns Email object
- */
 @Configuration
-@Slf4j
 @PropertySource("properties/techemail.properties")
+@Slf4j
 public class ServiceConfiguration {
+
+    @Value("${application.hostname}")
+    private String hostName;
+
+    @Value("${application.hostname}")
+    private String SMTPPort;
+
     @Value("${application.email}")
     private String email;
+
     @Value("${application.password}")
     private String password;
 
     @Bean
     public Email email() throws EmailException {
         Email simpleEmail = new SimpleEmail();
-        simpleEmail.setHostName("smtp.yandex.com");
-        simpleEmail.setSmtpPort(4651);
+        simpleEmail.setHostName(hostName);
+        simpleEmail.setSmtpPort(Integer.parseInt(SMTPPort));
         simpleEmail.setAuthenticator(new DefaultAuthenticator(email, password));
         simpleEmail.setSSLOnConnect(true);
         simpleEmail.setFrom(email);

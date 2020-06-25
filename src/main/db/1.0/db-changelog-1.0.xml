@@ -9,7 +9,6 @@
                  path="users.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
-                 stripComments="true"
         />
     </changeSet>
     <changeSet id="liquibase-docs" author="agenda">
@@ -17,7 +16,6 @@
                  path="agenda.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
-                 stripComments="true"
         />
     </changeSet>
 </databaseChangeLog>

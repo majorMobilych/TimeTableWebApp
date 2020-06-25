@@ -9,4 +9,5 @@ public interface AgendaRepository {
     List<AgendaEntity> getUsersAgenda(String userName);
     void updateUsersAgenda(AgendaDTO agendaDTO);
     void saveUsersAgenda(AgendaDTO agendaDTO);
+    void deleteUsersAgenda(int id);
 }

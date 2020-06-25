@@ -21,29 +21,38 @@ public class AgendaRepositoryImpl implements AgendaRepository {
 
     @Override
     public List<AgendaEntity> getUsersAgenda(String userName) {
-        Session currentSession = localSessionFactoryBean.openSession();
-        List list = currentSession.createQuery("FROM AgendaEntity WHERE username = :username")
-                .setParameter("username", userName).list();
-        currentSession.close();
-        return list;
+        Session session = localSessionFactoryBean.openSession();
+        List<AgendaEntity> usersAgenda = session.createQuery("FROM AgendaEntity WHERE username = :username",
+                AgendaEntity.class).setParameter("username", userName).list();
+        session.close();
+        return usersAgenda;
     }
 
     @Override
     public void updateUsersAgenda(AgendaDTO agendaDTO) {
         Session session = localSessionFactoryBean.openSession();
+        //TODO: что означает транзакция и зачем она тут нужна?
         session.beginTransaction();
         session.update(DTOEntityConverter.agendaToEntity(agendaDTO));
         session.getTransaction().commit();
         session.close();
     }
 
-
     @Override
     public void saveUsersAgenda(AgendaDTO agendaDTO) {
         Session session = localSessionFactoryBean.openSession();
+        //TODO: что означает транзакция и зачем она тут нужна?
         session.beginTransaction();
         session.save(DTOEntityConverter.agendaToEntity(agendaDTO));
         session.getTransaction().commit();
+        session.close();
+    }
+
+    //TODO: я пока написал простой createQuery, но что такое NATIVEQUERY? + не факт, что это метод работает(я не тестил)
+    @Override
+    public void deleteUsersAgenda(int id) {
+        Session session = localSessionFactoryBean.openSession();
+        session.createQuery("DELETE FROM AgendaEntity WHERE id = :id").setParameter("id", id).executeUpdate();
         session.close();
     }
 }

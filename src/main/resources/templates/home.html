@@ -10,94 +10,111 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <title>Start Page</title>
-    <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 
     <style>
+
+        /* PROPERTIES ORDER:
+                BACKGROUND;
+                BACKGROUND-COLOR;
+                BACKGROUND-VISIBILITY;
+                BACKGROUND-SIZE;
+                BORDER;
+                BOX-SHADOW;
+                COLOR;
+                CURSOR;
+                DISPLAY;
+                FLOAT;
+                FONT;
+                HEIGHT;
+                MARGIN;
+                OUTLINE;
+                PADDING;
+                POSITION;
+                TEXT-ALIGN;
+                TEXT-TRANSFORM;
+                VERTICAL-ALIGN;
+                WIDTH;
+        */
+
         body {
-            margin: 0;
             background: url(https://brainygirlsguidetobusiness.com/wp-content/uploads/2015/01/Dollarphotoclub_75407988.jpg);
             background-size: cover;
+            margin: 0;
         }
 
         button {
-            margin: 2% auto auto 3%;
             background-color: transparent;
             background-repeat: no-repeat;
             border: none;
+            margin: 2% auto auto 3%;
+            color: rgba(255, 255, 255, 1);
             cursor: pointer;
-            outline: none;
-            /* TODO: font in% - ? */
             font: normal 120%/120% 'Open Sans', sans-serif;
-            color: #fff;
+            outline: none;
             text-transform: uppercase;
         }
 
         table {
-            /* TODO: font margin .5% try to change to 5% - ? */
+            display: inline-block;
             margin: .5% auto auto;
             float: right;
-            display: inline-block;
         }
 
         input {
-            position: absolute;
-            top: 25%;
-            left: 65%;
-            width: 25%;
-            height: 50%;
-            text-align: center;
-            border: none;
-            outline: none;
-            padding: 15px 20px;
             background: rgba(255, 255, 255, .5);
-            color: #fff;
-            font: normal 120%/120% 'Open Sans', sans-serif;
+            border: none;
+            color:rgba(255, 255, 255, 1);
+            font: 700 120%/120% 'Open Sans', sans-serif;
+            height: 50%;
+            left: 65%;
+            outline: none;
+            padding: 15% 20%;
+            position: absolute;
+            text-align: center;
+            top: 25%;
+            width: 25%;
+        }
+
+        input:focus {
+            color: dimgray;
         }
 
         label {
-            vertical-align: middle;
-            font: 700 120%/120% 'Open Sans', sans-serif;
             color: #fff;
-            text-transform: uppercase
+            font: 700 120%/120% 'Open Sans', sans-serif;
+            text-transform: uppercase;
+            vertical-align: middle;
         }
 
         label.labelUserLoggedTimeTablesLeft {
-            display: inline-block;
-            margin: 2% 0 0 34%;
-            font: 700 18px/20px 'Open Sans', sans-serif;
             color: #fff;
+            display: inline-block;
+            font: 700 18px/20px 'Open Sans', sans-serif;
+            margin: 2% 0 0 34%;
             text-transform: uppercase
         }
 
         .upper-div {
-            width: 100%;
+            box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .20), 0 15px 50px 0 rgba(0, 0, 0, .15);
             height: 10%;
             margin: left;
-            box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .20), 0 15px 50px 0 rgba(0, 0, 0, .15);
+            transform: rotateX(360deg);
             transition: all .60s linear;
-            transform: rotateX(360deg)
+            width: 100%;
         }
 
         .userLoggedTimeTablesLeft {
+            background-color: rgba(255, 255, 255, .1);
+            box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .20), 0 15px 50px 0 rgba(0, 0, 0, .15);
+            font: normal 17px/20px 'Open Sans', sans-serif;
+            height: 85%;
             margin: 1% 0 0 1%;
             width: 40%;
-            height: 86%;
-            font: normal 17px/20px 'Open Sans', sans-serif;
-            box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .20), 0 15px 50px 0 rgba(0, 0, 0, .15);
-            background-color: rgba(255, 255, 255, .1);
-            /* set div invisibility */
             /* display: none;
             visibility: hidden */
-        }
-
-        .elementTimeTable {
-            margin: 2% 8% 0 8%;
-            box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .20), 0 15px 50px 0 rgba(0, 0, 0, .15);
-            height: 10%;
-            background-color: rgba(255, 255, 255, .2);
         }
     </style>
 
@@ -121,9 +138,15 @@
             <td th:id="'day' + ${element.id}" th:text="${element.day}"></td>
             <td th:id="'time' + ${element.id}" th:text="${element.time}"></td>
             <td th:id="'note' + ${element.id}" th:text="${element.note}"></td>
+            <td th:id="'privacy' + ${element.id}" th:text="${element.privacy}"></td>
             <td>
                 <button th:id="'editAgenda' + ${element.id}" class="buttonElementTimeTableView"
                         onclick="editOrSaveFunction(this.id)">EDIT
+                </button>
+            </td>
+            <td>
+                <button th:id="'delete' + ${element.id}" class="buttonElementTimeTableView"
+                        onclick="del(this.id)">DELETE
                 </button>
             </td>
         </tr>
@@ -131,6 +154,7 @@
             <td id="addDay" contenteditable="true"></td>
             <td id="addTime" contenteditable="true"></td>
             <td id="addNote" contenteditable="true"></td>
+            <td id="addPrivacy" contenteditable="true"></td>
             <td>
                 <button id="add">ADD AGENDA</button>
             </td>
@@ -141,26 +165,29 @@
 </body>
 
 <script>
-    function editOrSaveFunction(elementId) {
-        if (elementId.includes("editAgenda")) {
-            $("#" + elementId).closest('tr').find("td").attr('contenteditable', 'true');
-            $("#" + elementId).text("save");
-            $("#" + elementId).attr('contenteditable', 'false');
-            $("#" + elementId).attr('id', elementId.replace("editAgenda", "save"));
+    //TODO PRETTY VIEW
+    function editOrSaveFunction(elementName) {
+        if (elementName.includes("editAgenda")) {
+            let changing = "#" + elementName;
+            $(changing).closest('tr').find("td").attr('contenteditable', 'true');
+            $(changing).text("save");
+            $(changing).attr('contenteditable', 'false');
+            $(changing).attr('id', elementName.replace("editAgenda", "save"));
         } else {
-            $("#" + elementId).closest('tr').find("td").attr('contenteditable', 'false');
-            $("#" + elementId).attr('onClick', update(elementId));
-            $("#" + elementId).text("edit");
-            $("#" + elementId).attr('id', elementId.replace("save", "editAgenda"));
+            let changing = "#" + elementName;
+            $(changing).closest('tr').find("td").attr('contenteditable', 'false');
+            $(changing).text("edit");
+            $(changing).attr('onClick', update(elementName));
+            $(changing).attr('id', elementName.replace("save", "editAgenda"));
         }
 
         function update(elementId) {
-            var urlParams = new URLSearchParams(window.location.search);
-            var userName = urlParams.get('userName');
-            alert(userName);
-            var day = $("#" + elementId.replace("save", "day")).html();
-            var time = $('#time' + elementId.replace('save', '')).html();
-            var note = $("#note" + elementId.replace("save", "")).html();
+            let urlParams = new URLSearchParams(window.location.search);
+            let userName = urlParams.get('userName');
+            let day = $("#" + elementId.replace("save", "day")).html();
+            let time = $('#time' + elementId.replace('save', '')).html();
+            let note = $("#note" + elementId.replace("save", "")).html();
+            let privacy = $("#privacy" + elementId.replace("save", "")).html();
             $.post({
                 url: '/update',
                 contentType: "application/json; charset=UTF-8",
@@ -171,28 +198,29 @@
                     "username": userName,
                     "day": day,
                     "time": time,
-                    "note": note
+                    "note": note,
+                    "privacy": privacy
                 }),
                 success: function () {
                     alert('success');
                     console.log("success");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert(qXHR);
+                    alert(jqXHR);
                     alert(textStatus);
                     alert(errorThrown);
                 }
             });
-            //TODO BUTTON ADD - POST REQUEST
-            //TODO PRETTY VIEW
         }
     }
+
     $("#add").click(function () {
-        var urlParams = new URLSearchParams(window.location.search);
-        var userName = urlParams.get('userName');
-        var addDay = $("#addDay").html();
-        var addTime = $("#addTime").html();
-        var addNote = $("#addNote").html();
+        let urlParams = new URLSearchParams(window.location.search);
+        let userName = urlParams.get('userName');
+        let addDay = $("#addDay").html();
+        let addTime = $("#addTime").html();
+        let addNote = $("#addNote").html();
+        let addPrivacy = $("#addPrivacy").html();
         $.post({
             url: '/add',
             contentType: "application/json; charset=UTF-8",
@@ -202,19 +230,41 @@
                 "username": userName,
                 "day": addDay,
                 "time": addTime,
-                "note": addNote
+                "note": addNote,
+                "privacy": addPrivacy
             }),
             success: function () {
                 alert('success');
                 console.log("success");
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(qXHR);
+                alert(jqXHR);
                 alert(textStatus);
                 alert(errorThrown);
             }
         });
-    })
+    });
+
+    function del(elementName) {
+        let id = elementName.replace(/\d/g, "");
+        $.post({
+            url: '/del',
+            contentType: "application/json; charset=UTF-8",
+            mimeType: "text/html; charset=UTF-8",
+            scriptCharset: "utf-8",
+            data: JSON.stringify({
+                "id": id
+            }),
+            success: function () {
+                alert('success');
+                $(elementName).closest('tr').find("td").remove();
+                $(elementName).remove();
+            },
+            error: function (jqXHR, textStatus) {
+                alert(textStatus);
+            }
+        });
+    }
 </script>
 
 </html>
