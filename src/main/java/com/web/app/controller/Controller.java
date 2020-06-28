@@ -1,6 +1,5 @@
 package com.web.app.controller;
 
-import com.web.app.exceptions.UserAlreadyExistsException;
 import com.web.app.hibernate.entity.AgendaEntity;
 import com.web.app.model.AgendaDTO;
 import com.web.app.model.UsersDTO;
@@ -9,7 +8,6 @@ import com.web.app.repository.UserRepository;
 import com.web.app.service.AgendaService;
 import com.web.app.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +37,23 @@ public class Controller {
         return new ModelAndView("home");
     }
 
-    @GetMapping("/logInSignUp")
-    public ModelAndView redirectToLogInSignUp() {
-        return new ModelAndView("logInSignUp");
+    @GetMapping("/signUp")
+    public ModelAndView redirectToSignUp() {
+        return new ModelAndView("signUp");
     }
 
-    @RequestMapping(value = "/logIn", method = RequestMethod.POST)
+    @GetMapping("/logIn")
+    public ModelAndView redirectToLogIn() {
+        return new ModelAndView("logIn");
+    }
+
+    @RequestMapping(value = "/logInSignUp", method = RequestMethod.POST)
     @ResponseBody
-    public UsersDTO logIn(@RequestBody UsersDTO usersDTO) {
-        return userRepository.checkUser(usersDTO.getLogin(), usersDTO.getPassword());
+    public UsersDTO logInSignUp(@RequestBody UsersDTO usersDTO) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        UsersDTO dto = userRepository.checkUser(usersDTO.getLogin(), usersDTO.getPassword());
+        System.out.println("DTO" + dto.toString());
+        return dto;
     }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)

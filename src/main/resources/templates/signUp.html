@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in/sign up</title>
+    <style>
+        body {
+            margin: 0;
+            background: url(https://brainygirlsguidetobusiness.com/wp-content/uploads/2015/01/Dollarphotoclub_75407988.jpg);
+            background-size: cover;
+            /* 700-толщина шрифта, 16-размер шрифта, 18-высота строки,
+               sans-serif-название шрифта */
+            font: 700 16px/20px 'Open Sans', sans-serif
+        }
+
+        /* TODO: узнать, что значит конструкция: '(*-все), :after, :before' */
+        *, :after, :before {
+            box-sizing: border-box
+        }
+
+        a {
+            color: inherit;
+            /* убирает нижнее подчеркивание у ссылок */
+            text-decoration: none
+        }
+
+        .sign-up-label {
+            font: 700 16px/20px 'Open Sans', sans-serif;
+            color: #302a2a
+        }
+
+        .sign-up-wrap {
+            width: 100%;
+            margin: auto;
+            height: 100%;
+            position: absolute;
+
+            left: 30%;
+            /* TODO: почитать про тени */
+            box-shadow: 0 15px 15px 0 rgba(0, 0, 0, .10), 0 15px 50px 0 rgba(0, 0, 0, .25)
+        }
+
+        .logIn-html {
+            max-width: 100%;
+            height: 100%;
+            position: relative;
+            padding: 15% 10% 10% 10%;
+            background: rgba(205, 210, 219, .2);
+            display: inline-block
+        }
+
+
+        .sign-up-form .group .button {
+            width: 100%;
+            background: #302a2a;
+            color: #fff;
+            /* TODO: ЕСЛИ ИЗМЕНЯТЬ(добавлять совйство) ШРИФТ НАДПИСИ НА КНОПКИ, ВСЕ
+                  НЕМНОГО ШАТАЕТСЯ */
+            font: 700 16px/20px 'Open Sans', sans-serif;
+
+            /* Элемент показывается как блочный. Применение этого значения
+                  для встроенных элементов, например тега <span>, заставляет его вести
+                 подобно блокам — происходит перенос строк в начале и в конце содержимого
+                 http://htmlbook.ru/css/display */
+            display: block;
+        }
+
+        .sign-up-form .group input {
+            width: 100%;
+            background: #302a2a;
+            color: #302a2a;
+            /* TODO: ЕСЛИ ИЗМЕНЯТЬ(добавлять совйство) ШРИФТ НАДПИСИ НА КНОПКИ, ВСЕ
+                  НЕМНОГО ШАТАЕТСЯ */
+            font: 700 16px/20px 'Open Sans', sans-serif;
+
+            /* Элемент показывается как блочный. Применение этого значения
+                  для встроенных элементов, например тега <span>, заставляет его вести
+                 подобно блокам — происходит перенос строк в начале и в конце содержимого
+                 http://htmlbook.ru/css/display */
+            display: block;
+        }
+
+        .sign-up-form .group .input,
+        .sign-up-form .group .button {
+            /* не видна граница */
+            border: none;
+            /* при нажатии инпута, вокруг него появляется прямогульник. Это своейство
+               его убирает*/
+            outline: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .sign-up-form .group input[data-type = "password"] {
+            color:#302a2a;
+            /* чтоб были кружочки вместо символов - это пароль!*/
+            -webkit-text-security: circle
+        }
+
+        .sign-up-form .group .label {
+            /* лейблы над инпутами(юзернейм, пароль и т.д.) */
+            color: #302a2a;
+            font-size: 12px
+        }
+
+        .sign-up-form .group .button {
+            background: #302a2a;
+        }
+
+
+        .hr {
+            height: 2px;
+            margin: 60px 0 50px 0;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .foot-lnk {
+            color: #302a2a;
+            font: 600 18px/18px 'Open Sans', sans-serif;
+            text-align: center;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<script>
+    $(document).ready(function () {
+        $("#SignUp").click(function () {
+            let name = $("#userNameLogIn").val();
+            let login = $("#userEmailLogIn").val();
+            $.post({
+                url: '/signUp',
+                contentType: "application/json; charset=UTF-8",
+                mimeType: "text/html; charset=UTF-8",
+                scriptCharset: "utf-8",
+                data: JSON.stringify({
+                    "name": name,
+                    "login": login
+                }),
+                success: function () {
+                    console.log("success");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert(jqXHR.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+
+<body>
+<div class="sign-up-wrap">
+    <div class="logIn-html">
+        <label class="sign-up-label">SIGN UP</label>
+        <div class="sign-up-form">
+            <div class="log-in-htm">
+                <div class="group">
+                    <label for="userNameLogIn" class="label">Username</label>
+                    <input id="userNameLogIn" type="text" class="input">
+                </div>
+                <div class="group">
+                    <label for="userEmailLogIn" class="label">Email Address</label>
+                    <input id="userEmailLogIn" type="text" class="input">
+                </div>
+                <div class="group">
+                    <input id="SignUp" type="submit" class="button" value="Sign Up"/>
+                </div>
+                <div class="hr"></div>
+                <div class="foot-lnk">
+                    <label onclick="window.location.href='/logIn'">Already Member</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

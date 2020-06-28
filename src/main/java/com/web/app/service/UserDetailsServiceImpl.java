@@ -1,3 +1,4 @@
+/*
 package com.web.app.service;
 
 import com.web.app.hibernate.entity.UsersEntity;
@@ -27,10 +28,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) {
+        System.out.println("s = " + s);
         UsersEntity user = userRepository.getUser(s);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        System.out.println("user = " + user);
         grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(user.getRole_id())));
+        System.out.println("grantedAuthorities = " + grantedAuthorities);
         return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
                 grantedAuthorities);
     }
 }
+*/
