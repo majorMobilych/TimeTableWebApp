@@ -1,23 +1,26 @@
 package com.web.app.hibernate.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users", schema = "public", catalog = "postgres")
+@Data
 public class UsersEntity {
     private String login;
     private String name;
     private String password;
-    private int role_id;
+    private String role;
 
     public UsersEntity() {
     }
 
-    public UsersEntity(String login, String name, String password, int role_id) {
+    public UsersEntity(String login, String name, String password, String role) {
         this.login = login;
         this.name = name;
         this.password = password;
-        this.role_id = role_id;
+        this.role = role;
     }
 
     @Id
@@ -39,9 +42,9 @@ public class UsersEntity {
     }
 
     @Basic
-    @Column(name = "role_id")
-    public int getRole_id() {
-        return role_id;
+    @Column(name = "role")
+    public String getRole() {
+        return role;
     }
 
     public void setLogin(String login) {
@@ -56,7 +59,7 @@ public class UsersEntity {
         this.password = password;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRole(String role) {
+        this.role = role;
     }
 }

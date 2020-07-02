@@ -1,193 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Log in/sign up</title>
-    <style>
-        body {
-            margin: 0;
-            background: url(https://brainygirlsguidetobusiness.com/wp-content/uploads/2015/01/Dollarphotoclub_75407988.jpg);
-            background-size: cover;
-            /* 700-толщина шрифта, 16-размер шрифта, 18-высота строки,
-               sans-serif-название шрифта */
-            font: 700 16px/20px 'Open Sans', sans-serif
-        }
-
-        /* TODO: узнать, что значит конструкция: '(*-все), :after, :before' */
-        *, :after, :before {
-            box-sizing: border-box
-        }
-
-        a {
-            color: inherit;
-            /* убирает нижнее подчеркивание у ссылок */
-            text-decoration: none
-        }
-
-        .log-in-htm {
-            font: 700 16px/20px 'Open Sans', sans-serif;
-            color: #302a2a
-        }
-
-        .login-wrap {
-            width: 100%;
-            margin: auto;
-            height: 100%;
-            position: absolute;
-
-            left: 30%;
-            /* TODO: почитать про тени */
-            box-shadow: 0 15px 15px 0 rgba(0, 0, 0, .10), 0 15px 50px 0 rgba(0, 0, 0, .25)
-        }
-
-        .login-html {
-            max-width: 100%;
-            height: 100%;
-            position: relative;
-            padding: 15% 10% 10% 10%;
-            background: rgba(205, 210, 219, .2);
-            display: inline-block
-        }
-
-
-        .login-form .group .button {
-            width: 100%;
-            background: #302a2a;
-            color: #fff;
-            /* TODO: ЕСЛИ ИЗМЕНЯТЬ(добавлять совйство) ШРИФТ НАДПИСИ НА КНОПКИ, ВСЕ
-                  НЕМНОГО ШАТАЕТСЯ */
-            font: 700 16px/20px 'Open Sans', sans-serif;
-
-            /* Элемент показывается как блочный. Применение этого значения
-                  для встроенных элементов, например тега <span>, заставляет его вести
-                 подобно блокам — происходит перенос строк в начале и в конце содержимого
-                 http://htmlbook.ru/css/display */
-            display: block;
-        }
-
-        .login-form .group input {
-            width: 100%;
-            background: #302a2a;
-            color: #302a2a;
-            /* TODO: ЕСЛИ ИЗМЕНЯТЬ(добавлять совйство) ШРИФТ НАДПИСИ НА КНОПКИ, ВСЕ
-                  НЕМНОГО ШАТАЕТСЯ */
-            font: 700 16px/20px 'Open Sans', sans-serif;
-
-            /* Элемент показывается как блочный. Применение этого значения
-                  для встроенных элементов, например тега <span>, заставляет его вести
-                 подобно блокам — происходит перенос строк в начале и в конце содержимого
-                 http://htmlbook.ru/css/display */
-            display: block;
-        }
-
-        .login-form .group .input,
-        .login-form .group .button {
-            /* не видна граница */
-            border: none;
-            /* при нажатии инпута, вокруг него появляется прямогульник. Это своейство
-               его убирает*/
-            outline: none;
-            padding: 15px 20px;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, .1);
-        }
-
-        .login-form .group input[data-type = "password"] {
-            color:#302a2a;
-            /* чтоб были кружочки вместо символов - это пароль!*/
-            -webkit-text-security: circle
-        }
-
-        .login-form .group .label {
-            /* лейблы над инпутами(юзернейм, пароль и т.д.) */
-            color: #302a2a;
-            font-size: 12px
-        }
-
-        .login-form .group .button {
-            background: #302a2a;
-        }
-
-
-        .hr {
-            height: 2px;
-            margin: 60px 0 50px 0;
-            background: rgba(255, 255, 255, .2);
-        }
-
-        .foot-lnk {
-            color: #302a2a;
-            font: 600 18px/18px 'Open Sans', sans-serif;
-            text-align: center;
-        }
-    </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Please Log In</title>
 </head>
-<script>
-    $(document).ready(function () {
-        $("#LogIn").click(function () {
-            let login = $("#userEmailLogIn").val();
-            let password = $("#userPasswordLogIn").val();
-            $.post({
-                url: '/logInSignUp',
-                contentType: "application/json; charset=UTF-8",
-                mimeType: "text/html; charset=UTF-8",
-                scriptCharset: "utf-8",
-                data: JSON.stringify({
-                    "login": login,
-                    "password": password
-                }),
-                success: function (res) {
-                    alert('res' + res);
-                    console.log("success");
-                    let parsed = JSON.parse(res);
-                    let status = parsed.checkUserStatus;
-                    if (status === 'USER_NOT_FOUND') {
-                        alert('USER NOT FOUND');
-                    }
-                    if (status === 'INCORRECT_PASSWORD') {
-                        alert('INCORRECT PASSWORD');
-                    }
-                    if (status === 'SUCCESS') {
-                        let userName = parsed.name;
-                        alert(userName);
-                        window.location.href = '/homeWithAgenda?userName=' + userName;
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                }
-            });
-        });
-    });
-</script>
-
 <body>
-<div class="login-wrap">
-    <div class="login-html">
-        <label class="log-in-htm">SIGN IN</label>
-        <div class="login-form">
-            <div class="log-in-htm">
-                <div class="group">
-                    <label for="userNameLogIn" class="label">Email</label>
-                    <input id="userNameLogIn" type="text" class="input">
-                </div>
-                <div class="group">
-                    <label for="userEmailLogIn" class="label">Password</label>
-                    <input id="userEmailLogIn" type="text" class="input">
-                </div>
-                <div class="group">
-                    <input id="SignIn" type="submit" class="button" value="LOG IN"/>
-                </div>
-                <div class="hr"></div>
-<!--                <div class="foot-lnk">
-                    <label>Already Member</label>
-                </div>-->
-            </div>
-        </div>
+<h1>Please Log In</h1>
+<div th:if="${param.error}">
+    Invalid username and password.</div>
+<div th:if="${param.logout}">
+    You have been logged out.</div>
+<form th:action="@{/login}" method="post">
+    <div>
+        <input type="text" name="username" placeholder="Username"/>
     </div>
-</div>
+    <div>
+        <input type="password" name="password" placeholder="Password"/>
+    </div>
+    <input type="submit" value="Log in" />
+</form>
 </body>
 </html>

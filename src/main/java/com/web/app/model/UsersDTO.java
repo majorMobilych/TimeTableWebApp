@@ -4,7 +4,7 @@ public class UsersDTO {
     private String login;
     private String name;
     private String password;
-    private int roleId;
+    private String role;
     private String checkUserStatus;
 
     public UsersDTO() {
@@ -15,7 +15,7 @@ public class UsersDTO {
         this.name = name;
         this.password = password;
         this.checkUserStatus = checkUserStatus;
-        this.roleId = 2;
+        this.role = "user";
     }
 
     public UsersDTO(String checkUserStatus) {
@@ -34,10 +34,10 @@ public class UsersDTO {
         return password;
     }
 
-    public int getRole_id() {
+    public String getRole() {
         //TODO: final т.к. новых админов будут регать старые вручную через бд. Потом подумать еще раз
-        int role_id = 2;
-        return role_id;
+        String role = "user";
+        return role;
     }
 
     public String getCheckUserStatus() {

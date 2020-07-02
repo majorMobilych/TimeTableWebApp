@@ -12,7 +12,8 @@ public class ComparatorFactory {
 
     public static Comparator<AgendaEntity> getMainComparator() {
         return (agendaEntity, t1) -> {
-            int diffDay = DayOfWeek.valueOf(agendaEntity.getDay().toUpperCase()).day - DayOfWeek.valueOf(t1.getDay().toUpperCase()).day;
+            int diffDay = DayOfWeek.valueOf(agendaEntity.getDay().toUpperCase()).day - DayOfWeek.valueOf(t1.getDay()
+                    .toUpperCase()).day;
             if (diffDay == 0) {
                 return agendaEntity.getTime().compareTo(t1.getTime());
             }

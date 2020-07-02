@@ -7,6 +7,7 @@ import com.web.app.repository.AgendaRepository;
 import com.web.app.repository.UserRepository;
 import com.web.app.service.AgendaService;
 import com.web.app.service.UserService;
+import com.web.app.validator.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,16 @@ public class Controller {
     private final UserRepository userRepository;
     private final AgendaService agendaService;
     private final AgendaRepository agendaRepository;
+    private final UserValidator userValidator;
+
 
     @Autowired
-    public Controller(UserService userService, UserRepository userRepository, AgendaService agendaService, AgendaRepository agendaRepository) {
+    public Controller(UserService userService, UserRepository userRepository, AgendaService agendaService, AgendaRepository agendaRepository, UserValidator userValidator) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.agendaService = agendaService;
         this.agendaRepository = agendaRepository;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("/")
@@ -45,15 +49,6 @@ public class Controller {
     @GetMapping("/logIn")
     public ModelAndView redirectToLogIn() {
         return new ModelAndView("logIn");
-    }
-
-    @RequestMapping(value = "/logInSignUp", method = RequestMethod.POST)
-    @ResponseBody
-    public UsersDTO logInSignUp(@RequestBody UsersDTO usersDTO) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        UsersDTO dto = userRepository.checkUser(usersDTO.getLogin(), usersDTO.getPassword());
-        System.out.println("DTO" + dto.toString());
-        return dto;
     }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)

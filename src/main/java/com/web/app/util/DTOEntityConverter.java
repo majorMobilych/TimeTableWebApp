@@ -7,8 +7,11 @@ import com.web.app.model.UsersDTO;
 
 public class DTOEntityConverter {
 
+    private DTOEntityConverter() {
+    }
+
     public static UsersEntity usersToEntity(UsersDTO usersDTO) {
-        return new UsersEntity(usersDTO.getLogin(), usersDTO.getName(), usersDTO.getPassword(), usersDTO.getRole_id());
+        return new UsersEntity(usersDTO.getLogin(), usersDTO.getName(), usersDTO.getPassword(), usersDTO.getRole());
     }
 
     public static AgendaEntity agendaToEntity(AgendaDTO agendaDTO) {

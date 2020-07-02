@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,18 +17,21 @@ import org.springframework.stereotype.Component;
 public class UserServiceImpl implements UserService {
     private final Email email;
     private final UserRepository userRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(Email email, UserRepository userRepository) {
+    public UserServiceImpl(Email email, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
         this.email = email;
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public void saveUserAndSendPassword(String userEmail, String name) {
         String password = Generators.generatePassword();
         try {
-            userRepository.saveUser(new UsersDTO(userEmail, name, password, CheckUserStatus.SUCCESS.name()));
+            userRepository.saveUser(new UsersDTO(userEmail, name, bCryptPasswordEncoder.encode(password),
+                    CheckUserStatus.SUCCESS.name()));
         } catch (UserAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -35,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void sendPassword(String userEmail, String password) {
-        email.setSubject("Authentication to timeTable.project");
+        email.setSubject("Timetable authentication");
         try {
             email.setMsg("Your password: " + password);
             email.addTo(userEmail);

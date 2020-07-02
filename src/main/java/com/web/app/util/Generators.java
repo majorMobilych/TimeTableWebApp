@@ -1,15 +1,11 @@
 package com.web.app.util;
 
-import org.springframework.context.annotation.PropertySource;
-
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 
-@PropertySource("properties/generators.properties")
 public class Generators {
-
     private static int passwordLength;
     static {
         Properties properties = new Properties();
