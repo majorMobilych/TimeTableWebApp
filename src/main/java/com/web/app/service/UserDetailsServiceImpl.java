@@ -31,6 +31,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) {
         UsersEntity user = userRepository.getUser(s);
+        System.out.println("s = " + s);
+        System.out.println("user = " + user.toString());
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
         User userSecurity = new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),

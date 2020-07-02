@@ -246,7 +246,9 @@
     });
 
     function del(elementName) {
-        let id = elementName.replace(/\d/g, "");
+        alert('elementName = ' + elementName);
+        let id = elementName.replace(/\D/g, "");
+        alert('id = ' + id);
         $.post({
             url: '/del',
             contentType: "application/json; charset=UTF-8",
@@ -260,8 +262,10 @@
                 $(elementName).closest('tr').find("td").remove();
                 $(elementName).remove();
             },
-            error: function (jqXHR, textStatus) {
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR);
                 alert(textStatus);
+                alert(errorThrown);
             }
         });
     }

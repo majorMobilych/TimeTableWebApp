@@ -37,18 +37,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf()
+/*        httpSecurity
+                *//*.csrf()
                 .disable()
                 .authorizeRequests()
                 //Доступ только для не зарегистрированных пользователей
                 .antMatchers("/signUp").not().fullyAuthenticated()
                 //Доступ только для пользователей с ролью Администратор
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/homeWithAgenda").hasRole("USER")
-                .antMatchers("/update").hasRole("USER")
-                .antMatchers("/add").hasRole("USER")
-                .antMatchers("/del").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("admin")
+                .antMatchers("/homeWithAgenda").hasRole("user")
+                .antMatchers("/update").hasRole("user")
+                .antMatchers("/add").hasRole("user")
+                .antMatchers("/del").hasRole("user")*//*
                 //Доступ разрешен всем пользователей
                 .antMatchers("/", "/resources/**").permitAll()
                 //Все остальные страницы требуют аутентификации
@@ -59,12 +59,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/logIn")
                 .loginProcessingUrl("/login")
                 //Перенарпавление на главную страницу после успешного входа
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/homeWithAgenda")
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/");*/
+
     }
 
     @Autowired

@@ -77,9 +77,9 @@ public class Controller {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //TODO: переписать, дто писать надо?
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseEntity del(@RequestParam int id) {
+        System.out.println("id = " + id);
         agendaRepository.deleteUsersAgenda(id);
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -73,6 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
         Session currentSession = localSessionFactoryBean.openSession();
         UsersEntity selectUser = (UsersEntity) currentSession.createQuery("FROM UsersEntity WHERE login = :login")
                 .setParameter("login", userLogin).uniqueResult();
+        System.out.println("selectUser = " + selectUser.toString());
         currentSession.close();
         return selectUser;
     }
